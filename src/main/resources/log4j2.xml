@@ -1,28 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
     <Properties>
-        <Property name="basePath">../Log4j2Example/logs</Property>
+        <Property name="basePath">../LogClient/logs</Property>
     </Properties>
     <Appenders>
         <!-- File Appender -->
         <File name="file" fileName="${basePath}/logfile.log" append="true">
-            <PatternLayout pattern="%-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{2} (%F:%L) - %m%n" />
+            <PatternLayout
+                pattern="&lt;1&gt;%d{MMM dd HH:mm:ss} ${hostName} appName: {
+                        &quot;host&quot;:&quot;${hostName}&quot;,
+                        &quot;thread&quot;:&quot;%t&quot;,
+                        &quot;level&quot;:&quot;%p&quot;,
+                        &quot;logger&quot;:&quot;%c{1}&quot;,
+                        &quot;line&quot;:%L,
+                        &quot;message&quot;:&quot;%enc{%m}&quot;,
+                        &quot;exception&quot;:&quot;%exception&quot;
+                        }%n" />
         </File>
         <!-- Console Appender -->
         <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{2} (%F:%L) - %m%n" />
+            <PatternLayout
+                pattern="%d{MMM dd HH:mm:ss} ${hostName} appName: {
+                        host:${hostName},
+                        thread:%t,
+                        level:%p,
+                        logger;:%c{1},
+                        line;:%L,
+                        message:%enc{%m},
+                        exception:%exception;
+                        }%n" />
         </Console>
+        
+    <Syslog name="syslog" format="RFC5424" host="localhost" port="514"
+            protocol="UDP" appName="LogClient" includeMDC="false" mdcId="LogClient"
+            facility="LOCAL0" enterpriseNumber="18060" newLine="false"
+            messageId="Audit">
+            <LoggerFields>
+                  <KeyValuePair key="thread" value="%t"/>
+                  <KeyValuePair key="priority" value="%p"/>
+                  <KeyValuePair key="category" value="%c"/>
+                  <KeyValuePair key="exception" value="%ex"/>
+            </LoggerFields>
+                        
+    </Syslog>
         <Socket name="Socket1" host="localhost" port="514"  reconnectionDelay="5000" protocol="UDP">
-        <SerializedLayout/>
+            <PatternLayout
+                pattern="&lt;1&gt;%d{MMM dd HH:mm:ss} ${hostName} appName: {
+                        &quot;host&quot;:&quot;${hostName}&quot;,
+                        &quot;thread&quot;:&quot;%t&quot;,
+                        &quot;level&quot;:&quot;%p&quot;,
+                        &quot;logger&quot;:&quot;%c{1}&quot;,
+                        &quot;line&quot;:%L,
+                        &quot;message&quot;:&quot;%enc{%m}&quot;,
+                        &quot;exception&quot;:&quot;%exception&quot;
+                        }%n" />
         </Socket>
     </Appenders>
     <Loggers>
-<!--        <Logger name="com.jcg" level="info" >
+        <!--        <Logger name="com.jcg" level="info" >
             <AppenderRef ref="Socket1" />
         </Logger>-->
         <Root level="debug">
             <AppenderRef ref="STDOUT" />   
-            <AppenderRef ref="Socket1" />
+            <AppenderRef ref="syslog" />
          
         </Root>
     </Loggers>
