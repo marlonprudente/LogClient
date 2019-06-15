@@ -5,7 +5,7 @@
     </Properties>
     <Appenders>
         <!-- File Appender -->
-        <File name="file" fileName="${basePath}/logfile.log" append="true">
+<!--        <File name="file" fileName="${basePath}/logfile.log" append="true">
             <PatternLayout
                 pattern="&lt;1&gt;%d{MMM dd HH:mm:ss} ${hostName} appName: {
                         &quot;host&quot;:&quot;${hostName}&quot;,
@@ -16,19 +16,18 @@
                         &quot;message&quot;:&quot;%enc{%m}&quot;,
                         &quot;exception&quot;:&quot;%exception&quot;
                         }%n" />
-        </File>
+        </File>-->
         <!-- Console Appender -->
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout
                 pattern="%d{MMM dd HH:mm:ss} ${hostName} appName: {
-                        host:${hostName},
-                        thread:%t,
-                        level:%p,
-                        logger;:%c{1},
-                        line;:%L,
-                        message:%enc{%m},
-                        exception:%exception;
-                        }%n" />
+                            host:${hostName},
+                            thread:%t,
+                            level:%p,
+                            logger;:%c{1},
+                            line;:%L,
+                            message:%enc{%m},
+                            exception:%exception;}%n" />
         </Console>
         
     <Syslog name="syslog" format="RFC5424" host="localhost" port="514"
@@ -43,7 +42,7 @@
             </LoggerFields>
                         
     </Syslog>
-        <Socket name="Socket1" host="localhost" port="514"  reconnectionDelay="5000" protocol="UDP">
+<!--        <Socket name="Socket1" host="localhost" port="514"  reconnectionDelay="5000" protocol="UDP">
             <PatternLayout
                 pattern="&lt;1&gt;%d{MMM dd HH:mm:ss} ${hostName} appName: {
                         &quot;host&quot;:&quot;${hostName}&quot;,
@@ -54,16 +53,15 @@
                         &quot;message&quot;:&quot;%enc{%m}&quot;,
                         &quot;exception&quot;:&quot;%exception&quot;
                         }%n" />
-        </Socket>
+        </Socket>-->
     </Appenders>
     <Loggers>
         <!--        <Logger name="com.jcg" level="info" >
             <AppenderRef ref="Socket1" />
         </Logger>-->
         <Root level="debug">
-            <AppenderRef ref="STDOUT" />   
-            <AppenderRef ref="syslog" />
-         
+            <AppenderRef ref="STDOUT" />
+            <AppenderRef ref="syslog" />         
         </Root>
     </Loggers>
 </Configuration>
